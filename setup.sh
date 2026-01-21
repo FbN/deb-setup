@@ -49,7 +49,7 @@ rm "$FILE"
 
 echo "Neovim installation complete! Try running 'nvim --version'"
 # Link nvim to path and set as default vi/vim
-sudo ln -sf /opt/nvim-linux64/bin/nvim /usr/local/bin/nvim
+sudo ln -sf /opt/$DIR_NAME/bin/nvim /usr/local/bin/nvim
 sudo ln -sf /usr/local/bin/nvim /usr/local/bin/vi
 sudo ln -sf /usr/local/bin/nvim /usr/local/bin/vim
 
