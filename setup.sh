@@ -57,6 +57,7 @@ sudo ln -sf /usr/local/bin/nvim /usr/local/bin/vim
 echo "✨ Setting up LazyVim..."
 # Required: backup existing configs if they exist
 mv ~/.config/nvim ~/.config/nvim.bak 2>/dev/null || true
+rm -Rf ~/.config/nvim
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 # Remove the .git folder so you can start your own repo later
 rm -rf ~/.config/nvim/.git
