@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # Use the 'stable' tag which is more consistent than 'latest'
-NVIM_URL="https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz"
-
 # Exit on error
 set -e
 
@@ -13,22 +11,43 @@ sudo apt update
 sudo apt install -y zsh git curl wget build-essential unzip ripgrep fd-find
 
 echo "📦 Installing Neovim..."
-# Use the 'stable' tag which is more consistent than 'latest'
-# Download with -f (fail on 404) and -L (follow redirects)
-if curl -fsSL -o nvim-linux64.tar.gz "$NVIM_URL"; then
-    sudo rm -rf /opt/nvim
-    sudo tar -C /opt -xzf nvim-linux64.tar.gz
-    rm nvim-linux64.tar.gz
+# 1. Detect Architecture
+ARCH=$(uname -m)
 
-    # Link nvim to path and set as default vi/vim
-    sudo ln -sf /opt/nvim-linux64/bin/nvim /usr/local/bin/nvim
-    sudo ln -sf /usr/local/bin/nvim /usr/local/bin/vi
-    sudo ln -sf /usr/local/bin/nvim /usr/local/bin/vim
+if [ "$ARCH" = "x86_64" ]; then
+    FILE="nvim-linux-x86_64.tar.gz"
+    DIR_NAME="nvim-linux-x86_64"
+elif [ "$ARCH" = "aarch64" ]; then
+    FILE="nvim-linux-arm64.tar.gz"
+    DIR_NAME="nvim-linux-arm64"
 else
-    echo "❌ Error: Failed to download Neovim. Please check your internet connection or the URL."
+    echo "Error: Unsupported architecture ($ARCH)."
     exit 1
 fi
 
+# 2. Define URL
+URL="https://github.com/neovim/neovim/releases/latest/download/$FILE"
+
+echo "Detected $ARCH. Downloading from: $URL"
+
+# 3. Download and Install
+# Download to /tmp to keep your directory clean
+curl -LO "$URL"
+
+# Remove old version if it exists
+sudo rm -rf "/opt/$DIR_NAME"
+
+# Extract to /opt
+sudo tar -C /opt -xzf "$FILE"
+
+# 4. Create Symbolic Link
+# This makes the 'nvim' command available globally
+sudo ln -sf "/opt/$DIR_NAME/bin/nvim" /usr/local/bin/nvim
+
+# Cleanup
+rm "$FILE"
+
+echo "Neovim installation complete! Try running 'nvim --version'"
 # Link nvim to path and set as default vi/vim
 sudo ln -sf /opt/nvim-linux64/bin/nvim /usr/local/bin/nvim
 sudo ln -sf /usr/local/bin/nvim /usr/local/bin/vi
