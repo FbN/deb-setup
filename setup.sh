@@ -95,7 +95,7 @@ alias vim='nvim'
 
 # --- Path ---
 #export PATH="$PATH:/usr/local/bin"
-#EOF
+EOF
 
 # 6. Set Zsh as default shell
 echo "🔧 Setting Zsh as default shell..."
