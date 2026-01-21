@@ -73,8 +73,8 @@ fi
 
 # 5. Create .zshrc with History and Prompt settings
 echo "📝 Writing .zshrc configuration..."
-cat << 'EOF' > ~/.zshrc
-# --- History Configuration ---
+printf '
+# History configuration
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=50000
 SAVEHIST=10000
@@ -84,18 +84,15 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
 
-# --- Pure Prompt Setup ---
+# Pure Prompt
 fpath+=$HOME/.zsh/pure
 autoload -U promptinit; promptinit
 prompt pure
 
-# --- Aliases ---
-alias vi='nvim'
-alias vim='nvim'
-
-# --- Path ---
-#export PATH="$PATH:/usr/local/bin"
-EOF
+# Aliases
+alias vi="nvim"
+alias vim="nvim"
+' > ~/.zshrc
 
 # 6. Set Zsh as default shell
 echo "🔧 Setting Zsh as default shell..."
